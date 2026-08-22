@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="it">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -71,11 +71,11 @@
   <div id="ui">
     <div><b>f(x) = x² + i sin(x)</b></div>
     <div>Γ(x) = (x, x², sin(x))</div>
-    <div>i = versore della terza direzione; sin(x) = coefficiente reale lungo ±i</div>
+    <div>i = unit direction of the third axis; sin(x) = real coefficient along ±i</div>
 
     <input id="xpos" type="range" min="-12.566370614" max="12.566370614" step="0.01" value="1">
     <div id="info"></div>
-    <div id="note">Intervallo x: [-4π, 4π]. Scala grafica: y = x² × 0.1, asse i = sin(x) × 3.</div>
+    <div id="note">x interval: [-4π, 4π]. Display scaling: y = x² × 0.1, i-direction = sin(x) × 3.</div>
 
     <div id="buttons">
       <button id="zin" type="button">Zoom +</button>
@@ -123,7 +123,7 @@
 
     const ymax = XMAX * XMAX * Y_SCALE + 2;
 
-    // Piano reale z = 0
+    // Real plane z = 0
     const plane = new THREE.Mesh(
       new THREE.PlaneGeometry(28, ymax + 2),
       new THREE.MeshBasicMaterial({
@@ -159,15 +159,15 @@
       return obj;
     }
 
-    // Assi: x, parte reale y, versore i
+    // Axes: x, real component y, i direction
     line(new THREE.Vector3(-14, 0, 0), new THREE.Vector3(14, 0, 0), 0xcc5555);
     line(new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, ymax, 0), 0x55aa66);
     line(new THREE.Vector3(0, 0, -4), new THREE.Vector3(0, 0, 4), 0x5577dd);
 
-    // Curva reale di base: G_R(x) = (x, x², 0)
+    // Real base curve: G_R(x) = (x, x², 0)
     const basePts = [];
 
-    // Curva completa: Γ(x) = (x, x², sin x)
+    // Full curve: Γ(x) = (x, x², sin x)
     const complexPts = [];
 
     for (let n = 0; n <= STEPS; n++) {
@@ -191,7 +191,7 @@
       new THREE.MeshStandardMaterial({ color: 0x2f80ed })
     ));
 
-    // Segmenti di riferimento ogni π
+    // Reference segments every π
     for (let k = -4; k <= 4; k++) {
       const x = k * Math.PI;
       const y = x * x * Y_SCALE;
@@ -240,13 +240,13 @@
         new THREE.Vector3(x, y, z)
       ]);
 
-      const dir = s > 0 ? '+i' : s < 0 ? '-i' : 'reale';
+      const direction = s > 0 ? '+i' : s < 0 ? '-i' : 'real plane';
       const modulus = Math.sqrt(yReal * yReal + s * s);
       const phase = Math.atan2(s, yReal);
 
       info.textContent =
         `x=${x.toFixed(2)} | x²=${yReal.toFixed(3)} | sin(x)=${s.toFixed(3)} | ` +
-        `direzione=${dir} | |sin(x)|=${Math.abs(s).toFixed(3)} | ` +
+        `direction=${direction} | |sin(x)|=${Math.abs(s).toFixed(3)} | ` +
         `|f(x)|=${modulus.toFixed(3)} | arg=${phase.toFixed(3)} rad`;
     }
 
