@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D i-versor — Helix</title>
+  <style>
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #111;
+      color: #eee;
+      font-family: Arial, sans-serif;
+    }
+
+    #viewer {
+      width: 100vw;
+      height: 100vh;
+      display: block;
+    }
+
+    #ui {
+      position: fixed;
+      z-index: 10;
+      left: 12px;
+      top: 12px;
+      right: 12px;
+      max-width: 660px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: rgba(0,0,0,.68);
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    #ui input[type="range"] {
+      width: 100%;
+      margin-top: 8px;
+    }
+
+    #buttons {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    button {
+      padding: 7px 11px;
+      border: 0;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    #info {
+      margin-top: 8px;
+      font-family: monospace;
+      white-space: normal;
+    }
+
+    #note {
+      margin-top: 6px;
+      opacity: .75;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div id="ui">
+    <div><b>f(x) = (cos x + i sin x) / e^(i2x)</b></div>
+    <div>f(x) = e<sup>-ix</sup> = cos(x) - i sin(x)</div>
+    <div>Γ(x) = (x, cos(x), -sin(x))</div>
+    <div>Interpretation: <b>i</b> is the unit direction of the third axis, while <b>-sin(x)</b> is the real coefficient along ±i.</div>
+
+    <input id="xpos" type="range" min="-12.566370614" max="12.566370614" step="0.01" value="0">
+    <div id="info"></div>
+    <div id="note">Interval: x ∈ [-4π, 4π]. The curve is a helix of constant radius 1 around the x-axis.</div>
+
+    <div id="buttons">
+      <button id="zin" type="button">Zoom +</button>
+      <button id="zout" type="button">Zoom −</button>
+      <button id="reset" type="button">Reset</button>
+    </div>
+  </div>
+
+  <canvas id="viewer"></canvas>
+
+  <script type="module">
+    import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.179.1/+esm';
+    import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.179.1/examples/jsm/controls/OrbitControls.js/+esm';
+
+    const canvas = document.getElementById('viewer');
+    const slider = document.getElementById('xpos');
+    const info = document.getElementById('info');
+
+    const XMIN = -4 * Math.PI;
+    const XMAX =  4 * Math.PI;
+    const STEPS = 3200;
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x111111);
+
+    const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 500);
+
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enablePan = false;
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.07;
+    controls.minDistance = 6;
+    controls.maxDistance = 100;
+
+    scene.add(new THREE.AmbientLight(0xffffff, 2));
+
+    const light = new THREE.DirectionalLight(0xffffff, 2);
+    light.position.set(10, 12, 16);
+    scene.add(light);
+
+    function line(a, b, color, opacity = 1) {
+      const obj = new THREE.Line(
+        new THREE.BufferGeometry().setFromPoints([a, b]),
+        new THREE.LineBasicMaterial({ color, transparent: opacity < 1, opacity })
+      );
+      scene.add(obj);
+      return obj;
+    }
+
+    line(new THREE.Vector3(-14, 0, 0), new THREE.Vector3(14, 0, 0), 0xcc5555);
+    line(new THREE.Vector3(0, -2, 0), new THREE.Vector3(0, 2, 0), 0x55aa66);
+    line(new THREE.Vector3(0, 0, -2), new THREE.Vector3(0, 0, 2), 0x5577dd);
+
+    const cyl = new THREE.Mesh(
+      new THREE.CylinderGeometry(1, 1, 2 * Math.abs(XMAX), 48, 1, true),
+      new THREE.MeshBasicMaterial({
+        color: 0x777777,
+        transparent: true,
+        opacity: 0.08,
+        side: THREE.DoubleSide,
+        depthWrite: false
+      })
+    );
+    cyl.rotation.z = Math.PI / 2;
+    scene.add(cyl);
+
+    const helixPts = [];
+    for (let n = 0; n <= STEPS; n++) {
+      const x = XMIN + (XMAX - XMIN) * n / STEPS;
+      const y = Math.cos(x);
+      const z = -Math.sin(x);
+      helixPts.push(new THREE.Vector3(x, y, z));
+    }
+
+    const helixCurve = new THREE.CatmullRomCurve3(helixPts);
+    scene.add(new THREE.Mesh(
+      new THREE.TubeGeometry(helixCurve, STEPS, 0.07, 12, false),
+      new THREE.MeshStandardMaterial({ color: 0x2f80ed })
+    ));
+
+    const sphereGeo = new THREE.SphereGeometry(0.12, 20, 20);
+    const markMat = new THREE.MeshStandardMaterial({ color: 0xffaa33 });
+    for (let k = -8; k <= 8; k++) {
+      const x = k * Math.PI / 2;
+      const y = Math.cos(x);
+      const z = -Math.sin(x);
+      const m = new THREE.Mesh(sphereGeo, markMat);
+      m.position.set(x, y, z);
+      scene.add(m);
+    }
+
+    const axisMarker = new THREE.Mesh(
+      sphereGeo,
+      new THREE.MeshStandardMaterial({ color: 0xdd8844 })
+    );
+    scene.add(axisMarker);
+
+    const helixMarker = new THREE.Mesh(
+      sphereGeo,
+      new THREE.MeshStandardMaterial({ color: 0x2f80ed })
+    );
+    scene.add(helixMarker);
+
+    let dynamicRadius = line(
+      new THREE.Vector3(0, 0, 0),
+      new THREE.Vector3(0, 0, 0),
+      0x5577dd
+    );
+
+    function updatePoint() {
+      const x = Number(slider.value);
+      const re = Math.cos(x);
+      const im = -Math.sin(x);
+      const mod = Math.sqrt(re * re + im * im);
+      const arg = Math.atan2(im, re);
+
+      axisMarker.position.set(x, 0, 0);
+      helixMarker.position.set(x, re, im);
+
+      dynamicRadius.geometry.dispose();
+      dynamicRadius.geometry = new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector3(x, 0, 0),
+        new THREE.Vector3(x, re, im)
+      ]);
+
+      const dir = im > 0 ? '+i' : im < 0 ? '-i' : 'real axis';
+      info.textContent =
+        `x=${x.toFixed(2)} | Re=${re.toFixed(3)} | Im=${im.toFixed(3)} | ` +
+        `direction=${dir} | |f(x)|=${mod.toFixed(3)} | arg=${arg.toFixed(3)} rad`;
+    }
+
+    slider.addEventListener('input', updatePoint);
+
+    function fitCamera() {
+      const box = new THREE.Box3().setFromObject(scene);
+      const sphere = new THREE.Sphere();
+      box.getBoundingSphere(sphere);
+
+      const w = Math.max(window.innerWidth, 1);
+      const h = Math.max(window.innerHeight, 1);
+      camera.aspect = w / h;
+
+      const vfov = THREE.MathUtils.degToRad(camera.fov);
+      const hfov = 2 * Math.atan(Math.tan(vfov / 2) * camera.aspect);
+      const limitingFov = Math.min(vfov, hfov);
+      const distance = (sphere.radius / Math.sin(limitingFov / 2)) * 1.15;
+
+      const direction = new THREE.Vector3(1, 0.45, 0.9).normalize();
+      camera.position.copy(sphere.center).add(direction.multiplyScalar(distance));
+      controls.target.copy(sphere.center);
+
+      camera.near = 0.1;
+      camera.far = distance * 10;
+      camera.updateProjectionMatrix();
+      controls.update();
+    }
+
+    function zoom(mult) {
+      const dir = camera.position.clone().sub(controls.target);
+      dir.multiplyScalar(mult);
+      camera.position.copy(controls.target).add(dir);
+      controls.update();
+    }
+
+    document.getElementById('zin').addEventListener('click', () => zoom(0.8));
+    document.getElementById('zout').addEventListener('click', () => zoom(1.25));
+    document.getElementById('reset').addEventListener('click', fitCamera);
+
+    function resize() {
+      const w = Math.max(window.innerWidth, 1);
+      const h = Math.max(window.innerHeight, 1);
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    }
+
+    window.addEventListener('resize', () => {
+      resize();
+      fitCamera();
+    });
+
+    resize();
+    updatePoint();
+    fitCamera();
+
+    function animate() {
+      controls.update();
+      renderer.render(scene, camera);
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+  </script>
+</body>
+</html>
