@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D i-versor — Variable radius</title>
+  <style>html,body{margin:0;height:100%;background:#111;color:#eee;font-family:Arial,sans-serif}#viewer{height:72vh}#ui{padding:12px}input{width:100%}button{margin:8px 6px 0 0;padding:7px 11px}</style>
+</head>
+<body>
+  <div id="ui">
+    <b id="formula"></b><br><span id="curve"></span><br><span id="description"></span>
+    <input id="xpos" type="range"><div id="info"></div>
+    <button id="zin">Zoom +</button><button id="zout">Zoom −</button><button id="reset">Reset</button>
+  </div>
+  <div id="viewer"></div>
+  <script type="module">
+    import { createComplexDemo } from './complex-demo.js';
+    createComplexDemo({
+      formula:'f(x) = (2 + sin(x)) e^(ix)',
+      curve:'Γ(x) = (x, (2+sin x)cos x, (2+sin x)sin x)',
+      description:'The phase rotates linearly while the modulus oscillates between 1 and 3, producing a pulsating helix.',
+      xmin:-4*Math.PI, xmax:4*Math.PI, initial:0,
+      re:x=>(2+Math.sin(x))*Math.cos(x),
+      im:x=>(2+Math.sin(x))*Math.sin(x)
+    });
+  </script>
+</body>
+</html>
