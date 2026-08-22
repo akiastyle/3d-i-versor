@@ -6,7 +6,14 @@ Each example visualizes a complex-valued function of a real variable using
 Γ(x) = (x, Re(f(x)), Im(f(x)))
 ```
 
-with the imaginary unit `i` interpreted as the unit direction of the third axis and `Im(f(x))` as the real scalar coefficient along that direction.
+with a strict distinction between:
+
+```text
+i = algebraic imaginary unit
+k = geometric unit vector of the third axis
+```
+
+The real scalar `Im(f(x))` is rendered as signed displacement along `±k`.
 
 ## Examples
 
@@ -29,15 +36,30 @@ All files use [`complex-demo.js`](complex-demo.js), which provides:
 - `Re(f(x))` and `Im(f(x))`;
 - complex modulus `|f(x)|`;
 - complex argument `arg(f(x))`;
-- the instantaneous radial segment from the `x` axis to the complex point.
+- the instantaneous radial segment from the `x` axis to the complex point;
+- the current geometric `+k / -k` direction.
 
 ## Reading the geometry
 
-For every fixed `x`, the transverse `(Re, Im)` plane contains the complex value itself:
+For every fixed `x`, the transverse `y-k` plane contains
+
+```text
+(Re(f(x)), Im(f(x)))
+```
+
+while the original complex value remains
 
 ```text
 f(x) = Re(f(x)) + i Im(f(x))
 ```
+
+The geometric coordinates are therefore
+
+```text
+Re(f(x)) e_y + Im(f(x)) k
+```
+
+not `Re(f(x)) + k Im(f(x))` as a replacement algebra.
 
 The distance from the `x` axis is
 
@@ -51,4 +73,4 @@ and the angle around the `x` axis is
 atan2(Im(f(x)), Re(f(x))) = arg(f(x))
 ```
 
-This makes modulus and phase directly readable as radius and angular position of the 3D curve.
+Thus modulus and phase become radius and angular position, while `i` remains the imaginary unit and `k` remains purely geometric.
