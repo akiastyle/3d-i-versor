@@ -108,10 +108,10 @@ export function createComplexDemo(config) {
       new THREE.Vector3(x, re, im)
     ]);
 
-    const direction = im > 1e-10 ? '+i' : im < -1e-10 ? '-i' : 'real axis';
+    const direction = im > 1e-10 ? '+k' : im < -1e-10 ? '-k' : 'real axis';
     info.textContent =
       `x=${x.toFixed(4)} | Re=${re.toFixed(4)} | Im=${im.toFixed(4)} | ` +
-      `|f|=${mod.toFixed(4)} | arg=${arg.toFixed(4)} rad | ${direction}`;
+      `|f|=${mod.toFixed(4)} | arg=${arg.toFixed(4)} rad | k-direction=${direction}`;
   }
 
   slider.addEventListener('input', updatePoint);
