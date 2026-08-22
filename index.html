@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>3D i-versor</title>
+  <title>i-versor</title>
   <style>
     html, body {
       margin: 0;
@@ -71,11 +71,11 @@
   <div id="ui">
     <div><b>f(x) = x² + i sin(x)</b></div>
     <div>Γ(x) = (x, x², sin(x))</div>
-    <div>i = unit direction of the third axis; sin(x) = real coefficient along ±i</div>
+    <div>i = imaginary unit; k = geometric unit vector of the third axis; sin(x) = real coefficient along ±k</div>
 
     <input id="xpos" type="range" min="-12.566370614" max="12.566370614" step="0.01" value="1">
     <div id="info"></div>
-    <div id="note">x interval: [-4π, 4π]. Display scaling: y = x² × 0.1, i-direction = sin(x) × 3.</div>
+    <div id="note">x interval: [-4π, 4π]. Display scaling: y = x² × 0.1, k-direction = sin(x) × 3.</div>
 
     <div id="buttons">
       <button id="zin" type="button">Zoom +</button>
@@ -159,7 +159,7 @@
       return obj;
     }
 
-    // Axes: x, real component y, i direction
+    // Axes: x, real component y, geometric k direction
     line(new THREE.Vector3(-14, 0, 0), new THREE.Vector3(14, 0, 0), 0xcc5555);
     line(new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, ymax, 0), 0x55aa66);
     line(new THREE.Vector3(0, 0, -4), new THREE.Vector3(0, 0, 4), 0x5577dd);
@@ -240,13 +240,13 @@
         new THREE.Vector3(x, y, z)
       ]);
 
-      const direction = s > 0 ? '+i' : s < 0 ? '-i' : 'real plane';
+      const direction = s > 0 ? '+k' : s < 0 ? '-k' : 'real plane';
       const modulus = Math.sqrt(yReal * yReal + s * s);
       const phase = Math.atan2(s, yReal);
 
       info.textContent =
         `x=${x.toFixed(2)} | x²=${yReal.toFixed(3)} | sin(x)=${s.toFixed(3)} | ` +
-        `direction=${direction} | |sin(x)|=${Math.abs(s).toFixed(3)} | ` +
+        `k-direction=${direction} | |sin(x)|=${Math.abs(s).toFixed(3)} | ` +
         `|f(x)|=${modulus.toFixed(3)} | arg=${phase.toFixed(3)} rad`;
     }
 
