@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>3D i-versor — Rational function</title>
+  <title>i-versor — Rational function</title>
   <style>html,body{margin:0;height:100%;background:#111;color:#eee;font-family:Arial,sans-serif}#viewer{height:72vh}#ui{padding:12px}input{width:100%}button{margin:8px 6px 0 0;padding:7px 11px}</style>
 </head>
 <body>
@@ -18,7 +18,7 @@
     createComplexDemo({
       formula:'f(x) = 1 / (1 + i x)',
       curve:'Γ(x) = (x, 1/(1+x²), -x/(1+x²))',
-      description:'Both real and imaginary components decay toward zero as |x| grows; the curve approaches the x-axis.',
+      description:'Both real and imaginary components decay toward zero as |x| grows; the curve approaches the x-axis. Im(f) is rendered along the geometric k-axis.',
       xmin:-10, xmax:10, initial:0,
       re:x=>1/(1+x*x),
       im:x=>-x/(1+x*x)
