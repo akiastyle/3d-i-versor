@@ -1,30 +1,32 @@
 # 3d-i-versor
 
-Rappresentazione tridimensionale di una funzione complessa di variabile reale, interpretando `i` come **direzione/versore geometrico** e il coefficiente della parte immaginaria come **distanza lungo quella direzione**.
+A three-dimensional representation of a complex-valued function of a real variable, interpreting `i` as a **geometric unit direction** and the coefficient of the imaginary part as the **distance along that direction**.
 
-## Idea
+> In standard English mathematical terminology, *unit vector* is preferred to *versor*. The repository name keeps the original concept name `3d-i-versor`, while the documentation uses both terms where useful.
 
-Per una funzione
+## Core idea
+
+For a function
 
 ```text
 f(x) = u(x) + i v(x)
 ```
 
-si costruisce la curva 3D
+we construct the 3D curve
 
 ```text
 Γ(x) = (x, u(x), v(x))
 ```
 
-con:
+where:
 
-- asse `x`: variabile indipendente;
-- asse `y`: parte reale `u(x) = Re(f(x))`;
-- asse `z`: coefficiente reale `v(x) = Im(f(x))` misurato lungo la direzione associata a `i`.
+- the `x` axis is the independent variable;
+- the `y` axis is the real component `u(x) = Re(f(x))`;
+- the `z` axis stores the real coefficient `v(x) = Im(f(x))` along the direction associated with `i`.
 
-In questa lettura `i` non è una magnitudine: è il **versore della terza direzione**.
+In this interpretation, `i` is **not a magnitude**. It identifies the third unit direction.
 
-Formalmente, usando una base di R³:
+Using a basis of R³:
 
 ```text
 e_x = (1,0,0)
@@ -32,27 +34,29 @@ e_y = (0,1,0)
 e_i = (0,0,1)
 ```
 
-la curva può essere scritta come
+the curve can be written as
 
 ```text
 Γ(x) = x e_x + u(x) e_y + v(x) e_i
 ```
 
-oppure
+or equivalently
 
 ```text
 Γ(x) = (x, u(x), 0) + v(x)e_i
 ```
 
-Il segno di `v(x)` determina l'orientamento `+i` o `-i`; il valore assoluto `|v(x)|` è la distanza dal piano reale `z = 0`.
+The sign of `v(x)` determines the orientation `+i` or `-i`, while `|v(x)|` is the distance from the real plane `z = 0`.
 
-## Esempio usato
+## Example
+
+The interactive demo uses
 
 ```text
 f(x) = x² + i sin(x)
 ```
 
-quindi
+therefore
 
 ```text
 u(x) = x²
@@ -60,124 +64,200 @@ v(x) = sin(x)
 Γ(x) = (x, x², sin(x))
 ```
 
-La rappresentazione permette di vedere contemporaneamente due grafici distinti:
+The representation contains two distinct graphs at the same time:
 
 ```text
 G_R(x) = (x, x², 0)
 G_I(x) = (x, 0, sin(x))
 ```
 
-La curva completa combina i due contributi mantenendoli geometricamente separati.
+The complete curve combines both contributions while keeping their geometric roles separate.
 
-## Interpretazione di i
+## Interpreting `i` as a unit direction
 
-Per un termine come
+For a term such as
 
 ```text
 5i = 5 · i
 ```
 
-la lettura geometrica adottata è:
+the adopted geometric reading is:
 
-- `5`: magnitudine reale;
-- `i`: direzione;
-- `-5i`: stessa magnitudine, direzione opposta.
+- `5` = real magnitude;
+- `i` = direction;
+- `-5i` = the same magnitude in the opposite direction.
 
-Perciò
+Therefore
 
 ```text
-v(x)i = |v(x)| · direzione(+i oppure -i)
+v(x)i = |v(x)| · direction(+i or -i)
 ```
 
-Questa è un'interpretazione geometrica della decomposizione standard in parte reale e parte immaginaria; non modifica l'algebra dei numeri complessi.
+This is a geometric interpretation of the standard decomposition into real and imaginary components. It does **not** change complex-number algebra.
 
-## Informazioni leggibili dal grafico
+For the example
 
-Per ogni valore di `x`, il punto della funzione è
+```text
+sin(x)i
+```
+
+we can read:
+
+- `|sin(x)|` as a real distance;
+- the sign of `sin(x)` as the choice between `+i` and `-i`.
+
+This preserves the continuous sinusoidal behaviour. The imaginary component is not reduced to the discrete states `-1`, `0`, `+1`.
+
+## What the 3D graph shows
+
+For each value of `x`, the function point is
 
 ```text
 F(x) = (x, u(x), v(x))
 ```
 
-mentre il punto corrispondente sull'asse di ingresso è
+and the corresponding point on the input axis is
 
 ```text
 P(x) = (x, 0, 0)
 ```
 
-La distanza tra i due è
+The displacement inside the plane orthogonal to the `x` axis is
+
+```text
+F(x) - P(x) = (0, u(x), v(x))
+```
+
+Its length is
 
 ```text
 |F(x)-P(x)| = sqrt(u(x)² + v(x)²) = |f(x)|
 ```
 
-quindi il **modulo del numero complesso** diventa una distanza geometrica nel piano ortogonale all'asse `x`.
+so the **complex modulus** becomes an ordinary Euclidean distance.
 
-L'angolo nello stesso piano è
+The angle in the same transverse plane is
 
 ```text
 arg(f(x)) = atan2(v(x), u(x))
 ```
 
-quindi la **fase/argomento** diventa un orientamento geometrico.
+so the **complex argument / phase** becomes a geometric orientation.
 
-Per l'esempio:
+For
+
+```text
+f(x) = x² + i sin(x)
+```
+
+this gives
 
 ```text
 |f(x)| = sqrt(x⁴ + sin²(x))
 arg(f(x)) = atan2(sin(x), x²)
 ```
 
-Inoltre:
+The visualization also makes several behaviours directly visible:
 
-- `sin(x) = 0` → la curva ricade sul piano reale;
-- `sin(x) > 0` → spostamento nella direzione `+i`;
-- `sin(x) < 0` → spostamento nella direzione `-i`;
-- la periodicità di `sin(x)` resta visibile senza discretizzarla in `-1/0/+1`.
+- `sin(x) = 0` → the complete curve lies on the real plane;
+- `sin(x) > 0` → displacement in the `+i` direction;
+- `sin(x) < 0` → displacement in the `-i` direction;
+- the `2π` periodicity of `sin(x)` appears as a repeated oscillation around the real base curve;
+- the real component `x²` and the imaginary coefficient `sin(x)` remain simultaneously observable.
 
-## Relazione con la matematica standard
+## Relation to standard mathematics
 
-Per
+For
 
 ```text
 f : R → C
 ```
 
-vale l'identificazione
+we have the real-vector-space identification
+
+```text
+C ≅ R²
+```
+
+and therefore
 
 ```text
 R × C ≅ R³
 ```
 
-perché `C ≅ R²` come spazio vettoriale reale.
-
-Quindi
+Hence
 
 ```text
 x ↦ (x, Re(f(x)), Im(f(x)))
 ```
 
-è una curva parametrica in R³. La particolarità di questa visualizzazione è l'interpretazione esplicita della terza base `e_i` come **versore immaginario**, mentre il coefficiente `Im(f(x))` resta una quantità reale.
+is a standard parametrized curve in R³.
 
-Questa rappresentazione non è una nuova definizione di `C`: è un modo geometrico di visualizzare il grafico di una funzione complessa di variabile reale.
+The specific viewpoint explored by this project is to interpret the third basis vector
 
-## Demo interattiva
+```text
+e_i = (0,0,1)
+```
 
-Aprire:
+as the geometric direction associated with `i`, while `Im(f(x))` remains a real scalar coefficient along that direction.
+
+The model is therefore **not a new definition of the complex numbers**. It is a geometric visualization of the graph of a complex-valued function of a real variable, with an explicit separation between:
+
+```text
+magnitude  ×  direction
+```
+
+for the imaginary contribution.
+
+## Projection view
+
+The full 3D curve is
+
+```text
+Γ(x) = (x, u(x), v(x))
+```
+
+Its projections recover the two component functions:
+
+```text
+xy projection → (x, u(x)) = real component
+xz projection → (x, v(x)) = imaginary coefficient
+```
+
+For the demo:
+
+```text
+xy projection → y = x²
+xz projection → z = sin(x)
+```
+
+This is one of the main practical advantages of the representation: both component graphs are embedded in a single geometric object.
+
+## Interactive demo
+
+Open:
 
 ```text
 index.html
 ```
 
-La demo usa Three.js e OrbitControls e consente:
+The demo uses Three.js and OrbitControls and provides:
 
-- rotazione 3D;
-- zoom;
-- reset della camera;
-- esplorazione di `x` nell'intervallo `[-4π, 4π]`;
-- visualizzazione simultanea della curva reale di base e della curva complessa;
-- lettura numerica di `x`, `x²`, `sin(x)`, direzione `+i/-i`, `|sin(x)|`.
+- free 3D rotation;
+- zoom in / zoom out;
+- camera reset;
+- exploration of `x` over `[-4π, 4π]`;
+- simultaneous display of the real base curve and the full complex curve;
+- an interactive sample point;
+- numerical values for `x`, `x²`, `sin(x)`, `+i/-i` direction, `|sin(x)|`, modulus and argument.
 
-### Nota sulle scale grafiche
+## Display scaling
 
-Per rendere leggibile un intervallo ampio, la demo comprime graficamente `x²` e amplifica la direzione `i`. I valori numerici mostrati restano quelli matematici reali.
+Over the interval `[-4π, 4π]`, `x²` grows much faster than `sin(x)`. To keep both components visually readable, the demo uses display-only scale factors:
+
+```text
+displayed y = x² × 0.1
+displayed i-direction displacement = sin(x) × 3
+```
+
+These factors affect only the rendering. The numerical values shown by the interface remain the actual mathematical values of the function.
