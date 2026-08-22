@@ -1,4 +1,4 @@
-# i-versor
+# i-unit-vector
 
 A three-dimensional representation of a complex-valued function of a real variable, with a strict separation between the algebraic imaginary unit `i` and the geometric third-axis unit vector `k`.
 
@@ -63,8 +63,8 @@ The representation uses:
 
 ```text
 x-axis   -> independent variable
- y-axis  -> Re(f(x))
- k-axis  -> Im(f(x)) coefficient represented geometrically
+y-axis   -> Re(f(x))
+k-axis   -> Im(f(x)) coefficient represented geometrically
 ```
 
 The main planes are:
@@ -230,7 +230,7 @@ x -> (x, Re(f(x)), Im(f(x)))
 
 is a standard parametrized curve in `R³`.
 
-The specific viewpoint of **i-versor** is terminological and geometric:
+The specific viewpoint of **i-unit-vector** is terminological and geometric:
 
 ```text
 i -> algebraic imaginary unit
