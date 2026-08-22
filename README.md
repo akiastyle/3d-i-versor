@@ -1,32 +1,25 @@
 # 3d-i-versor
 
-A three-dimensional representation of a complex-valued function of a real variable, interpreting `i` as a **geometric unit direction** and the coefficient of the imaginary part as the **distance along that direction**.
+A 3D visualization of complex-valued functions of a real variable, with `i` interpreted as a **geometric unit direction** and the imaginary coefficient interpreted as a **real distance along that direction**.
 
-> In standard English mathematical terminology, *unit vector* is preferred to *versor*. The repository name keeps the original concept name `3d-i-versor`, while the documentation uses both terms where useful.
+> In standard English mathematical terminology, *unit vector* is more common than *versor*. The repository keeps the original name `3d-i-versor` because it captures the geometric idea being explored.
 
-## Core idea
+## Core model
 
-For a function
+For
 
 ```text
 f(x) = u(x) + i v(x)
 ```
 
-we construct the 3D curve
+we draw
 
 ```text
 Γ(x) = (x, u(x), v(x))
+     = (x, Re(f(x)), Im(f(x)))
 ```
 
-where:
-
-- the `x` axis is the independent variable;
-- the `y` axis is the real component `u(x) = Re(f(x))`;
-- the `z` axis stores the real coefficient `v(x) = Im(f(x))` along the direction associated with `i`.
-
-In this interpretation, `i` is **not a magnitude**. It identifies the third unit direction.
-
-Using a basis of R³:
+using the basis
 
 ```text
 e_x = (1,0,0)
@@ -34,23 +27,26 @@ e_y = (0,1,0)
 e_i = (0,0,1)
 ```
 
-the curve can be written as
+so that
 
 ```text
-Γ(x) = x e_x + u(x) e_y + v(x) e_i
+Γ(x) = x e_x + u(x)e_y + v(x)e_i
 ```
 
-or equivalently
+In this interpretation:
 
-```text
-Γ(x) = (x, u(x), 0) + v(x)e_i
-```
+- `x` is the independent variable;
+- `u(x)` is the real component;
+- `e_i` is the direction associated with `i`;
+- `v(x)` is the real scalar coefficient along `e_i`;
+- the sign of `v(x)` selects `+i` or `-i`;
+- `|v(x)|` is the distance from the real plane in the imaginary direction.
 
-The sign of `v(x)` determines the orientation `+i` or `-i`, while `|v(x)|` is the distance from the real plane `z = 0`.
+This does **not** redefine complex-number algebra. It is a geometric representation of the standard decomposition into real and imaginary components.
 
-## Example
+## First example
 
-The interactive demo uses
+The main interactive demo uses
 
 ```text
 f(x) = x² + i sin(x)
@@ -59,113 +55,124 @@ f(x) = x² + i sin(x)
 therefore
 
 ```text
-u(x) = x²
-v(x) = sin(x)
 Γ(x) = (x, x², sin(x))
 ```
 
-The representation contains two distinct graphs at the same time:
+The two component graphs are simultaneously embedded in the same object:
 
 ```text
-G_R(x) = (x, x², 0)
-G_I(x) = (x, 0, sin(x))
+xy projection → y = x²
+xz projection → z = sin(x)
 ```
 
-The complete curve combines both contributions while keeping their geometric roles separate.
+Open [`index.html`](index.html).
 
-## Interpreting `i` as a unit direction
+## Modulus and phase become geometry
 
-For a term such as
+At a fixed value of `x`, define
 
 ```text
-5i = 5 · i
+P(x) = (x,0,0)
+F(x) = (x,Re(f(x)),Im(f(x)))
 ```
 
-the adopted geometric reading is:
-
-- `5` = real magnitude;
-- `i` = direction;
-- `-5i` = the same magnitude in the opposite direction.
-
-Therefore
+Then
 
 ```text
-v(x)i = |v(x)| · direction(+i or -i)
+|F(x)-P(x)|
+= sqrt(Re(f(x))² + Im(f(x))²)
+= |f(x)|
 ```
 
-This is a geometric interpretation of the standard decomposition into real and imaginary components. It does **not** change complex-number algebra.
+so the **complex modulus** is literally the radial distance from the `x` axis.
 
-For the example
+The angular position around the `x` axis is
 
 ```text
-sin(x)i
+arg(f(x)) = atan2(Im(f(x)), Re(f(x)))
 ```
 
-we can read:
+so the **complex argument / phase** becomes an ordinary geometric angle.
 
-- `|sin(x)|` as a real distance;
-- the sign of `sin(x)` as the choice between `+i` and `-i`.
-
-This preserves the continuous sinusoidal behaviour. The imaginary component is not reduced to the discrete states `-1`, `0`, `+1`.
-
-## What the 3D graph shows
-
-For each value of `x`, the function point is
+For functions written in polar form
 
 ```text
-F(x) = (x, u(x), v(x))
+f(x) = A(x)e^(iφ(x))
 ```
 
-and the corresponding point on the input axis is
+the 3D representation is
 
 ```text
-P(x) = (x, 0, 0)
+Γ(x) = (x, A(x)cos(φ(x)), A(x)sin(φ(x)))
 ```
 
-The displacement inside the plane orthogonal to the `x` axis is
+which gives the direct interpretation
 
 ```text
-F(x) - P(x) = (0, u(x), v(x))
+A(x)   = radius from the x-axis
+φ(x)   = angular position around the x-axis
 ```
 
-Its length is
+## Helix example
+
+The second root-level demo is
 
 ```text
-|F(x)-P(x)| = sqrt(u(x)² + v(x)²) = |f(x)|
+f(x) = (cos x + i sin x) / e^(i2x)
+     = e^(-ix)
+     = cos x - i sin x
 ```
 
-so the **complex modulus** becomes an ordinary Euclidean distance.
-
-The angle in the same transverse plane is
+therefore
 
 ```text
-arg(f(x)) = atan2(v(x), u(x))
+Γ(x) = (x, cos x, -sin x)
 ```
 
-so the **complex argument / phase** becomes a geometric orientation.
-
-For
+Since
 
 ```text
-f(x) = x² + i sin(x)
+cos²x + sin²x = 1
 ```
 
-this gives
+the curve is a unit-radius helix around the `x` axis.
+
+Open [`helix.html`](helix.html).
+
+## Interactive example collection
+
+Additional examples are available in [`examples/`](examples/README.md):
+
+| Example | Function | Geometric behaviour |
+|---|---|---|
+| [`helix-positive`](examples/helix-positive.html) | `e^(ix)` | Constant radius 1, linear positive phase |
+| [`damped-helix`](examples/damped-helix.html) | `e^((-0.15+i)x)` | Phase keeps rotating while the radius decays exponentially |
+| [`expanding-helix`](examples/expanding-helix.html) | `x e^(ix)` | Radius grows linearly with `x` |
+| [`chirp-helix`](examples/chirp-helix.html) | `e^(i x²)` | Radius stays 1 while angular velocity increases |
+| [`variable-radius`](examples/variable-radius.html) | `(2+sin x)e^(ix)` | Rotating curve with a pulsating radius between 1 and 3 |
+| [`rational`](examples/rational.html) | `1/(1+i x)` | Real and imaginary components decay toward the `x` axis |
+
+These examples use a shared interactive renderer: [`examples/complex-demo.js`](examples/complex-demo.js).
+
+## Why these examples are useful
+
+The collection separates different complex behaviours geometrically:
+
+- **pure phase change** → rotation at constant radius;
+- **changing modulus** → radial expansion or contraction;
+- **changing phase velocity** → tighter or looser winding;
+- **simultaneous modulus and phase modulation** → a varying-radius helix;
+- **decay toward zero** → convergence toward the `x` axis.
+
+This makes the polar decomposition
 
 ```text
-|f(x)| = sqrt(x⁴ + sin²(x))
-arg(f(x)) = atan2(sin(x), x²)
+f(x) = |f(x)| e^(i arg(f(x)))
 ```
 
-The visualization also makes several behaviours directly visible:
+visually explicit in three dimensions.
 
-- `sin(x) = 0` → the complete curve lies on the real plane;
-- `sin(x) > 0` → displacement in the `+i` direction;
-- `sin(x) < 0` → displacement in the `-i` direction;
-- the `2π` periodicity of `sin(x)` appears as a repeated oscillation around the real base curve;
-- the real component `x²` and the imaginary coefficient `sin(x)` remain simultaneously observable.
-
-## Relation to standard mathematics
+## Mathematical context
 
 For
 
@@ -173,91 +180,41 @@ For
 f : R → C
 ```
 
-we have the real-vector-space identification
+we have
 
 ```text
 C ≅ R²
 ```
 
-and therefore
+as real vector spaces, therefore
 
 ```text
 R × C ≅ R³
 ```
 
-Hence
+and
 
 ```text
 x ↦ (x, Re(f(x)), Im(f(x)))
 ```
 
-is a standard parametrized curve in R³.
+is a standard parametrized curve in `R³`.
 
-The specific viewpoint explored by this project is to interpret the third basis vector
+The distinctive viewpoint of this project is the explicit interpretation of the third basis vector as the geometric direction associated with `i`, while the imaginary coefficient remains an ordinary real scalar.
 
-```text
-e_i = (0,0,1)
-```
+## Interaction
 
-as the geometric direction associated with `i`, while `Im(f(x))` remains a real scalar coefficient along that direction.
-
-The model is therefore **not a new definition of the complex numbers**. It is a geometric visualization of the graph of a complex-valued function of a real variable, with an explicit separation between:
-
-```text
-magnitude  ×  direction
-```
-
-for the imaginary contribution.
-
-## Projection view
-
-The full 3D curve is
-
-```text
-Γ(x) = (x, u(x), v(x))
-```
-
-Its projections recover the two component functions:
-
-```text
-xy projection → (x, u(x)) = real component
-xz projection → (x, v(x)) = imaginary coefficient
-```
-
-For the demo:
-
-```text
-xy projection → y = x²
-xz projection → z = sin(x)
-```
-
-This is one of the main practical advantages of the representation: both component graphs are embedded in a single geometric object.
-
-## Interactive demo
-
-Open:
-
-```text
-index.html
-```
-
-The demo uses Three.js and OrbitControls and provides:
+The demos use Three.js and OrbitControls and provide:
 
 - free 3D rotation;
 - zoom in / zoom out;
 - camera reset;
-- exploration of `x` over `[-4π, 4π]`;
-- simultaneous display of the real base curve and the full complex curve;
-- an interactive sample point;
-- numerical values for `x`, `x²`, `sin(x)`, `+i/-i` direction, `|sin(x)|`, modulus and argument.
+- an interactive `x` slider;
+- live `Re(f(x))` and `Im(f(x))` values;
+- modulus `|f(x)|`;
+- argument `arg(f(x))`;
+- a radial segment from the `x` axis to the current complex point.
 
 ## Display scaling
 
-Over the interval `[-4π, 4π]`, `x²` grows much faster than `sin(x)`. To keep both components visually readable, the demo uses display-only scale factors:
-
-```text
-displayed y = x² × 0.1
-displayed i-direction displacement = sin(x) × 3
-```
-
-These factors affect only the rendering. The numerical values shown by the interface remain the actual mathematical values of the function.
+Some demos use display-only scale factors when one component grows much faster than another. Those factors affect only the rendering. The numerical values shown in the interface remain the actual mathematical values.
