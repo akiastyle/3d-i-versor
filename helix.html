@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>3D i-versor — Helix</title>
+  <title>i-versor — Helix</title>
   <style>
     html, body {
       margin: 0;
@@ -72,7 +72,7 @@
     <div><b>f(x) = (cos x + i sin x) / e^(i2x)</b></div>
     <div>f(x) = e<sup>-ix</sup> = cos(x) - i sin(x)</div>
     <div>Γ(x) = (x, cos(x), -sin(x))</div>
-    <div>Interpretation: <b>i</b> is the unit direction of the third axis, while <b>-sin(x)</b> is the real coefficient along ±i.</div>
+    <div>Interpretation: <b>i</b> is the imaginary unit; <b>k</b> is the geometric third-axis unit vector; <b>-sin(x)</b> is the real coefficient rendered along ±k.</div>
 
     <input id="xpos" type="range" min="-12.566370614" max="12.566370614" step="0.01" value="0">
     <div id="info"></div>
@@ -205,10 +205,10 @@
         new THREE.Vector3(x, re, im)
       ]);
 
-      const dir = im > 0 ? '+i' : im < 0 ? '-i' : 'real axis';
+      const dir = im > 0 ? '+k' : im < 0 ? '-k' : 'real axis';
       info.textContent =
         `x=${x.toFixed(2)} | Re=${re.toFixed(3)} | Im=${im.toFixed(3)} | ` +
-        `direction=${dir} | |f(x)|=${mod.toFixed(3)} | arg=${arg.toFixed(3)} rad`;
+        `k-direction=${dir} | |f(x)|=${mod.toFixed(3)} | arg=${arg.toFixed(3)} rad`;
     }
 
     slider.addEventListener('input', updatePoint);
