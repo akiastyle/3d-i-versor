@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>3D i-versor — Damped helix</title>
+  <title>i-versor — Damped helix</title>
   <style>html,body{margin:0;height:100%;background:#111;color:#eee;font-family:Arial,sans-serif}#viewer{height:72vh}#ui{padding:12px}input{width:100%}button{margin:8px 6px 0 0;padding:7px 11px}</style>
 </head>
 <body>
@@ -18,7 +18,7 @@
     createComplexDemo({
       formula:'f(x) = e^((-0.15+i)x)',
       curve:'Γ(x) = (x, e^(-0.15x)cos(x), e^(-0.15x)sin(x))',
-      description:'The phase keeps rotating while the modulus decays exponentially toward zero.',
+      description:'The phase keeps rotating while the modulus decays exponentially toward zero. Im(f) is rendered along the geometric k-axis.',
       xmin:0, xmax:8*Math.PI, initial:0,
       re:x=>Math.exp(-0.15*x)*Math.cos(x),
       im:x=>Math.exp(-0.15*x)*Math.sin(x)
