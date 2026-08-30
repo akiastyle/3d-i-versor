@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>i-unit-vector — Negative real roots</title>
+  <style>html,body{margin:0;height:100%;background:#111;color:#eee;font-family:Arial,sans-serif}#viewer{height:72vh}#ui{padding:12px}input{width:100%}button{margin:8px 6px 0 0;padding:7px 11px}.control{margin-top:8px}</style>
+</head>
+<body>
+  <div id="ui">
+    <b id="formula"></b><br><span id="curve"></span><br><span id="description"></span>
+    <div class="control"><label for="nval">n = <span id="nvalue">3</span></label><input id="nval" type="range"></div>
+    <div class="control"><label for="xpos">Transverse y-k plane</label><input id="xpos" type="range"></div>
+    <div id="info"></div>
+    <button id="zin">Zoom +</button><button id="zout">Zoom −</button><button id="reset">Reset</button>
+  </div>
+  <div id="viewer"></div>
+  <script type="module">
+    import { createNegativeRootsDemo } from './complex-demo.js';
+    createNegativeRootsDemo({
+      xmin:-10,
+      initialX:-8,
+      nmin:2,
+      nmax:12,
+      initialN:3
+    });
+  </script>
+</body>
+</html>
