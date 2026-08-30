@@ -207,6 +207,53 @@ phi'(x)    = angular rate
 
 This makes modulus and phase independently visible in one 3D object.
 
+## Negative real n-th roots
+
+For a negative real input, consider
+
+```text
+z^n = x
+x ≤ 0
+n ≥ 2
+```
+
+The `n` roots can be written as
+
+```text
+z_j(x) = rho(x) exp(i theta_j)
+```
+
+with
+
+```text
+rho(x) = (-x)^(1/n)
+theta_j = ((2j+1)pi)/n
+j = 0,...,n-1
+```
+
+In the 3D model each root generates a branch
+
+```text
+Gamma_j(x) = (x, rho(x) cos(theta_j), rho(x) sin(theta_j))
+```
+
+For a fixed `x < 0`, the `n` roots are equally spaced on a circle in the transverse `y-k` plane:
+
+```text
+radius = |z_j| = rho(x)
+angle  = arg(z_j) = theta_j
+```
+
+As `x -> 0`, the radius tends to zero and all branches meet at the origin. At `x = 0`, the root is `z = 0` and its complex argument is undefined.
+
+The interactive [`negative-roots.html`](examples/negative-roots.html) demo provides:
+
+- selectable `n = 2..12`;
+- selectable transverse position `x` over `[-10,0]`;
+- all `n` continuous root branches;
+- the transverse `y-k` plane at the selected `x`;
+- the root circle, radial segments and root points on that section.
+
 ## Relation to standard mathematics
 
 For
@@ -256,6 +303,7 @@ Additional examples are available in [`examples/`](examples/):
 | [`chirp-helix.html`](examples/chirp-helix.html) | `e^(i x²)` | Constant radius, increasing angular rate |
 | [`variable-radius.html`](examples/variable-radius.html) | `(2+sin x)e^(ix)` | Periodically changing radius |
 | [`rational.html`](examples/rational.html) | `1/(1+i x)` | Radius decays toward the x-axis |
+| [`negative-roots.html`](examples/negative-roots.html) | `z^n = x`, `x ≤ 0` | `n` radial branches and an interactive transverse root circle |
 
 ## Display scaling
 
