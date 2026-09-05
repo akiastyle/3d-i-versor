@@ -285,8 +285,9 @@ export function createNegativeRootsDemo(config = {}) {
       const points = [];
 
       for (let s = 0; s <= STEPS; s++) {
-        const x = XMIN + (XMAX - XMIN) * s / STEPS;
-        const r = rho(x, n);
+        // Sample uniformly in radius to resolve the branches near x = 0.
+        const r = rho(XMIN, n) * (1 - s / STEPS);
+        const x = s === 0 ? XMIN : s === STEPS ? XMAX : -Math.pow(r, n);
         points.push(new THREE.Vector3(
           x,
           r * Math.cos(angle),
